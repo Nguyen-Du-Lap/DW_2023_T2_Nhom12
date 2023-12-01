@@ -52,7 +52,7 @@ public class Main {
                 List<ArrayList<String>> data = GetDataWeb.getData(sourcePath);
 
                 //Ghi log đang extract
-                
+
                 //Ghi dữ liệu vào file execel
                 Excel.save(data, location+"."+format);
             } else {
