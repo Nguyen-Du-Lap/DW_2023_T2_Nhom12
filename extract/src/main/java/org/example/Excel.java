@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Excel {
-    public void save(List<ArrayList<String>> data) {
+    public static void save(List<ArrayList<String>> data, String locationFormat) {
 
-        String filePath = "C:\\datawarehouse\\path_to_file.xlsx";
+//        String filePath = "C:\\datawarehouse\\path_to_file.xlsx";
 
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Currency Data");
@@ -36,9 +36,9 @@ public class Excel {
                 }
             }
 
-            try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
+            try (FileOutputStream outputStream = new FileOutputStream(locationFormat)) {
                 workbook.write(outputStream);
-                System.out.println("File created successfully at: " + filePath);
+                System.out.println("File created successfully at: " + locationFormat);
             }
         } catch (IOException e) {
             e.printStackTrace();

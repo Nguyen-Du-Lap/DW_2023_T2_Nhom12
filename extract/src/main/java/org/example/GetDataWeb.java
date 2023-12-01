@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetDataWeb {
-    public List<ArrayList<String>> getData() {
+    public static List<ArrayList<String>> getData(String sourcePath) {
         List<ArrayList<String>> data = new ArrayList<>();
 
         System.setProperty("webdriver.edge.driver", "msedgedriver.exe");
-        String url = ConfigProperties.getLink();
+        String url = sourcePath;
         // Thiết lập web chạy ẩn
         EdgeOptions options = new EdgeOptions();
         options.addArguments("--headless");
