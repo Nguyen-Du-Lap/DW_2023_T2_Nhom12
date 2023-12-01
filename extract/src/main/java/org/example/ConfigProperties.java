@@ -18,4 +18,15 @@ public class ConfigProperties {
         return prop.get("link").toString();
     }
 
+    public static String getUsername() {
+        return prop.getProperty("username");
+    }
+
+    public static String getPassword() {
+        return prop.getProperty("password");
+    }
+
+    public static String getJdbcURL() {
+        return prop.getProperty("jdbcURL");
+    }
 }
