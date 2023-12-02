@@ -5,25 +5,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 public class ConfigDAO {
 
-    public static Config getConfigByFlagAndStatus(Connection connection) {
-        Config config = null;
+    public static Configuration getConfigByFlagAndStatus(Connection connection) {
+        Configuration configuration = null;
         String sql = "SELECT source_path, location, format, date_run FROM config WHERE flag = 1 AND status = 'default'";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    config = new Config();
-                    config.setSourcePath(resultSet.getString("source_path"));
-                    config.setLocation(resultSet.getString("location"));
-                    config.setFormat(resultSet.getString("format"));
-                    config.setDateRun(resultSet.getDate("date_run"));
+                    configuration = new Configuration();
+                    configuration.setSourcePath(resultSet.getString("source_path"));
+                    configuration.setLocation(resultSet.getString("location"));
+                    configuration.setFormat(resultSet.getString("format"));
+                    configuration.setDateRun(resultSet.getDate("date_run"));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return config;
+        return configuration;
     }
 
     public static void updateStatus(Connection connection, int configId, String status) {

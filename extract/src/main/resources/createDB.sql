@@ -19,8 +19,8 @@
 CREATE DATABASE IF NOT EXISTS `database_control` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `database_control`;
 
--- Dumping structure for table database_control.config
-CREATE TABLE IF NOT EXISTS `config` (
+-- Dumping structure for table database_control.configuration
+CREATE TABLE IF NOT EXISTS `configuration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(1000) DEFAULT NULL,
   `status` text DEFAULT NULL,
@@ -48,9 +48,9 @@ CREATE TABLE IF NOT EXISTS `config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table database_control.config: ~1 rows (approximately)
-INSERT INTO `config` (`id`, `name`, `status`, `flag`, `description`, `source_path`, `location`, `format`, `separator`, `columns_name_staging_temp`, `type_columns_staging_temp`, `database_name_staging`, `database_name_warehouse`, `database_name_datamart`, `server_name`, `port`, `username`, `password`, `destination`, `date_run`, `create_at`, `create_by`, `dt_update`, `update_by`) VALUES
-	(1, 'Tỷ giá', 'Default', 1, 'Là config dùng cho trang web https://www.sbv.gov.vn/webcenter/portal/m/menu/trangchu/tg', 'https://www.sbv.gov.vn/webcenter/portal/m/menu/trangchu/tg', 'D:// datawarehouse/data', 'xlsx', '\\t', '(date, currency, name, exchange_rate)', '(text, text, text, text)', 'Database_Staging', 'Database_Warehouse', 'Database_DataMart', '127.0.0.1', '3306', 'root', '123456789', 'exchange_rate_temp', '2023-01-21', '2023-12-01 14:56:03', 'An', '2023-12-01 14:57:55', 'An');
+-- Dumping data for table database_control.configuration: ~1 rows (approximately)
+INSERT INTO `configuration` (`id`, `name`, `status`, `flag`, `description`, `source_path`, `location`, `format`, `separator`, `columns_name_staging_temp`, `type_columns_staging_temp`, `database_name_staging`, `database_name_warehouse`, `database_name_datamart`, `server_name`, `port`, `username`, `password`, `destination`, `date_run`, `create_at`, `create_by`, `dt_update`, `update_by`) VALUES
+	(1, 'Tỷ giá', 'Default', 1, 'Là configuration dùng cho trang web https://www.sbv.gov.vn/webcenter/portal/m/menu/trangchu/tg', 'https://www.sbv.gov.vn/webcenter/portal/m/menu/trangchu/tg', 'D:// datawarehouse/data', 'xlsx', '\\t', '(date, currency, name, exchange_rate)', '(text, text, text, text)', 'Database_Staging', 'Database_Warehouse', 'Database_DataMart', '127.0.0.1', '3306', 'root', '123456789', 'exchange_rate_temp', '2023-01-21', '2023-12-01 14:56:03', 'An', '2023-12-01 14:57:55', 'An');
 
 -- Dumping structure for table database_control.log
 CREATE TABLE IF NOT EXISTS `log` (
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `config_id` (`config_id`),
-  CONSTRAINT `log_ibfk_1` FOREIGN KEY (`config_id`) REFERENCES `config` (`id`)
+  CONSTRAINT `log_ibfk_1` FOREIGN KEY (`config_id`) REFERENCES `configuration` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table database_control.log: ~0 rows (approximately)
