@@ -6,9 +6,9 @@ import java.sql.SQLException;
 public class MySQLConnectionManager {
 
     // Phương thức để lấy kết nối đến MySQL
-    public static Connection getConnection() {
+    public static Connection getConnection(String url, String username, String password) {
         try {
-            return DriverManager.getConnection(ConfigProperties.getJdbcURL(), ConfigProperties.getUsername(), ConfigProperties.getPassword());
+            return DriverManager.getConnection(url,username, password);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Không thể lấy kết nối đến database!");
@@ -25,5 +25,8 @@ public class MySQLConnectionManager {
                 throw new RuntimeException("Không thể đóng kết nối!");
             }
         }
+    }
+    public static String urlFormat(String serverName, String port, String databaseName) {
+        return "jdbc:mysql://"+serverName+":"+port+"/"+databaseName;
     }
 }
