@@ -1,0 +1,76 @@
+/* Thêm kiểu CSS vào nơi bạn đang quản lý kiểu CSS trong ứng dụng của mình, có thể là một tệp CSS riêng hoặc inline CSS */
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+  
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+  
+  /* Nếu bạn muốn định dạng thêm cho input */
+input[type="number"] {
+    padding: 5px; /* Điều chỉnh khoảng trắng xung quanh nội dung */
+    border: none;
+  }
+
+input[type="number"]:focus  {
+    outline: none; 
+  }
+
+select:focus {
+    outline: none; 
+}
+  
+.currency {
+    width: 800px;
+    margin: 0 auto;
+    border-radius: 20px;
+    border: #ccc solid 1px;
+}
+.currency-inputs {
+    padding: 40px 60px;
+    display: flex;
+    align-items: center;
+}
+  
+  .currency-inputs input[type="number"] {
+    padding: 10px;
+    font-size: 16px;
+    
+  }
+  
+
+  
+  .currency-inputs .conversion-icon {
+    font-size: 36px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  
+  /* Add additional styling as needed */
+
+.warrap {
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 12px;
+}
+.select {
+    position: absolute;
+    right: 2px;
+    border: none;
+    top: 1px;
+}
+.currency-inputs select {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    align-items: center;
+    margin-top: 12px;
+  }
+  
