@@ -1,0 +1,62 @@
+/* DatePickerRange.css */
+.date-picker-range-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .date-picker-item {
+    margin-right: 20px;
+  }
+  
+  /* Tùy chỉnh giao diện DatePicker của react-datepicker */
+  .react-datepicker {
+    font-family: 'Arial', sans-serif;
+    border-radius: 4px;
+  }
+  
+  /* Tùy chỉnh màu nền của DatePicker */
+  .react-datepicker__input-container {
+    display: block;
+    margin-top: 12px;
+  }
+  
+  /* Tùy chỉnh input của DatePicker */
+  .react-datepicker__input-container input {
+    margin-left: 12px;
+    width: 100px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  /* Tùy chỉnh màu nền của calendar */
+  .react-datepicker__calendar-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Tùy chỉnh màu của các ngày trong calendar */
+  .react-datepicker__day {
+    color: #333;
+  }
+  
+  /* Tùy chỉnh màu nền của ngày được chọn trong calendar */
+  .react-datepicker__day--selected {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  /* Tùy chỉnh màu của các ngày cuối tuần trong calendar */
+  .react-datepicker__day--weekend {
+    color: #d9534f;
+  }
+
+  /* Tùy chỉnh màu ngày không chọn được */
+.react-datepicker__day--disabled {
+    color: #999; /* Màu chữ xám */
+    pointer-events: none; /* Vô hiệu hóa sự kiện cho ngày không chọn được */
+  }
+  
