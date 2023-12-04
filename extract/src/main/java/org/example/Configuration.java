@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.Date;
 
-public class Config {
+public class Configuration {
     private String sourcePath;
     private String location;
     private String format;
@@ -10,11 +10,11 @@ public class Config {
 
     // Constructors, getters, and setters
 
-    public Config() {
+    public Configuration() {
         // Default constructor
     }
 
-    public Config(String sourcePath, String location, String format, Date dateRun) {
+    public Configuration(String sourcePath, String location, String format, Date dateRun) {
         this.sourcePath = sourcePath;
         this.location = location;
         this.format = format;

@@ -1,0 +1,55 @@
+.date {
+    display: flex;
+    float: right;
+}
+.currency-converter {
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+  }
+  
+  /* Định dạng input của DatePicker */
+  .react-datepicker-wrapper {
+    flex: 1; /* Sử dụng phần còn lại của không gian trong container */
+  }
+  
+  /* Định dạng nút chọn ngày tùy chỉnh */
+  .custom-datepicker-input {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Định dạng biểu tượng lịch trong nút chọn ngày */
+  .custom-datepicker-input span {
+    margin-right: 5px;
+  }
+  
+  /* Định dạng DatePicker */
+  .react-datepicker {
+    font-size: 16px;
+  }
+  
+  /* Định dạng các mục trong DatePicker */
+  .react-datepicker__day {
+    font-size: 14px;
+  }
+  
+  /* Định dạng nút điều hướng trong DatePicker */
+  .react-datepicker__navigation {
+    top: 10px;
+  }
+  
+  /* Định dạng nút điều hướng tháng trong DatePicker */
+  .react-datepicker__navigation--next {
+    right: 10px;
+  }
+  
+  /* Định dạng nút điều hướng tháng trong DatePicker */
+  .react-datepicker__navigation--previous {
+    left: 10px;
+  }
+  

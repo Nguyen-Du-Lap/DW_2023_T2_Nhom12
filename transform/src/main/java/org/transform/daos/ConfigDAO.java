@@ -1,4 +1,7 @@
-package org.example;
+package org.transform.daos;
+
+import org.transform.models.Configuration;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
