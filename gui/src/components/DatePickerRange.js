@@ -17,13 +17,12 @@ const DatePickerRange = ({ onDateRangeChange }) => {
     setEndDate(date);
     onDateRangeChange && onDateRangeChange({ startDate, endDate: date });
   };
-
   // Lấy ngày hiện tại
   const currentDate = new Date();
 
   return (
-    <div>
-      <div>
+    <div style={{display: 'flex', justifySelf: 'start'}}>
+      <div style={{marginLeft: '24px'}}>
         <label>Start Date: </label>
         <DatePicker
           selected={startDate}
@@ -31,7 +30,7 @@ const DatePickerRange = ({ onDateRangeChange }) => {
           maxDate={currentDate} // Chỉ cho phép chọn ngày trở về trước
         />
       </div>
-      <div>
+      <div style={{marginLeft: '24px'}}>
         <label>End Date: </label>
         <DatePicker
           selected={endDate}

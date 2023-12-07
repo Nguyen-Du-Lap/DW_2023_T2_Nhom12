@@ -4,6 +4,8 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     margin-bottom: 20px;
+    display: flex;
+    justify-self: start;
   }
 
   .select-container {
@@ -18,12 +20,12 @@
   
   .label-select {
     display: block;
-    margin-bottom: 8px;
     margin-right: 12px;
+    padding-top: 4px;
   }
   
   .select-dropdown {
-    width: 100px;
+    width: 190px;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;

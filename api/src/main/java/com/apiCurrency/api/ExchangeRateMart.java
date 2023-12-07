@@ -13,7 +13,7 @@ public class ExchangeRateMart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private Date date;
     private String currency;
