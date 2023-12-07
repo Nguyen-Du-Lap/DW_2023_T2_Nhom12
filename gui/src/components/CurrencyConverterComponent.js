@@ -1,57 +1,68 @@
 // CurrencyConverterComponent.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/CurrencyConverterComponent.css';
 
-const CurrencyConverterComponent = ({ onConvert }) => {
+const CurrencyConverterComponent = ({ data, listOptionSelect, selectedDate }) => {
   const [amount, setAmount] = useState('');
-  const [currencyFrom, setCurrencyFrom] = useState('USD');
+  const [result, setResult] = useState('');
+  const [currencyFrom, setCurrencyFrom] = useState('EUR');
   const [currencyTo, setCurrencyTo] = useState('EUR');
-
+  function getExchangeRatesCurrency(currency) {
+    const exchangeRate = data && data.find(item => item.currency === currency);
+    return exchangeRate ? exchangeRate.exchangeRate : 0;
+  }
+  function caculatorCurrency(amount, currencyFrom, currencyTo) {
+    return amount * getExchangeRatesCurrency(currencyFrom) / getExchangeRatesCurrency(currencyTo);
+  }
   const handleAmountChange = (e) => {
     const newAmount = e.target.value;
     setAmount(newAmount);
-
-    // Automatically trigger conversion when the amount changes
-    onConvert({ amount: newAmount, currencyFrom, currencyTo });
   };
 
   const handleCurrencyFromChange = (e) => {
     const newCurrencyFrom = e.target.value;
     setCurrencyFrom(newCurrencyFrom);
-
-    // Trigger conversion when the currencyFrom changes
-    onConvert({ amount, currencyFrom: newCurrencyFrom, currencyTo });
   };
 
   const handleCurrencyToChange = (e) => {
     const newCurrencyTo = e.target.value;
     setCurrencyTo(newCurrencyTo);
 
-    // Trigger conversion when the currencyTo changes
-    onConvert({ amount, currencyFrom, currencyTo: newCurrencyTo });
   };
+
+  useEffect(() => {
+    setResult(caculatorCurrency(amount, currencyFrom, currencyTo).toFixed(2));
+  }, [amount])
+
+  useEffect(() => {
+    setAmount('')
+    setResult('')
+  }, [currencyFrom, currencyTo, selectedDate])
 
   return (
     <div className='currency'>
-    <div className="currency-inputs">
+      <div className="currency-inputs">
+          <div className='warrap'>
+          <input type="number" value={amount} onChange={handleAmountChange} placeholder="Enter amount" />
+              <select className='select' value={currencyFrom} onChange={handleCurrencyFromChange}>
+
+                  { listOptionSelect && listOptionSelect.map((item, index) => {
+                    return <option key={index} value={item.name_currency}>{item.name_currency}</option>
+                  })}
+              </select>
+          </div>
+        <span className="conversion-icon" role="img" aria-label="convert">
+          ↔️
+        </span>
         <div className='warrap'>
-        <input type="number" value={amount} onChange={handleAmountChange} placeholder="Enter amount" />
-            <select className='select' value={currencyFrom} onChange={handleCurrencyFromChange}>
-                <option value="USD">USD</option>
-                {/* Add more currency options as needed */}
-            </select>
+          <input type="number" value={result} placeholder="" />
+          <select className='select' value={currencyTo} onChange={handleCurrencyToChange}>
+            { listOptionSelect && listOptionSelect.map((item, index) => {
+                  return  <option key={index} value={item.name_currency}>{item.name_currency}</option>
+                  })}
+          </select>
         </div>
-      <span className="conversion-icon" role="img" aria-label="convert">
-        ↔️
-      </span>
-      <div className='warrap'>
-        <input type="number" value={amount} onChange={handleAmountChange} placeholder="" />
-        <select className='select' value={currencyTo} onChange={handleCurrencyToChange}>
-            <option value="EUR">EUR</option>
-            {/* Add more currency options as needed */}
-        </select>
       </div>
-    </div>
     </div>
 
   );

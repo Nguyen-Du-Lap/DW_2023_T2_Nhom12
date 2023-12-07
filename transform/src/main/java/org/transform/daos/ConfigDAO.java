@@ -9,24 +9,28 @@ import java.sql.SQLException;
 public class ConfigDAO {
 
     public static Configuration getConfigByFlagAndStatus(Connection connection) {
-        Configuration configuration = null;
-        String sql = "SELECT source_path, location, format, date_run FROM config WHERE flag = 1 AND status = 'default'";
+        Configuration config = null;
+        String sql = "SELECT database_name_staging, database_name_warehouse, server_name, port, username, password, date_run " +
+                "FROM config WHERE flag = 1 AND status = 'CL'";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    configuration = new Configuration();
-                    configuration.setSourcePath(resultSet.getString("source_path"));
-                    configuration.setLocation(resultSet.getString("location"));
-                    configuration.setFormat(resultSet.getString("format"));
-                    configuration.setDateRun(resultSet.getDate("date_run"));
+                    config = new Configuration();
+                    config.setDatabaseNameStaging(resultSet.getString(1));
+                    config.setDatabaseNameWarehouse(resultSet.getString(2));
+                    config.setServerName(resultSet.getString(3));
+                    config.setPort(resultSet.getString(4));
+                    config.setUsername(resultSet.getString(5));
+                    config.setPassword(resultSet.getString(6));
+                    config.setDateRun(resultSet.getDate(7));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return configuration;
+        return config;
     }
 
     public static void updateStatus(Connection connection, int configId, String status) {
