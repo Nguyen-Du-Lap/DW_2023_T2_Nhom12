@@ -7,7 +7,7 @@ public class ConfigDAO {
 
     public static Configuration getConfigByFlagAndStatus(Connection connection) {
         Configuration configuration = null;
-        String sql = "SELECT source_path, location, format, date_run FROM config WHERE flag = 1 AND status = 'default'";
+        String sql = "SELECT * FROM config WHERE flag = 1 AND status = 'default'";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -17,6 +17,7 @@ public class ConfigDAO {
                     configuration.setLocation(resultSet.getString("location"));
                     configuration.setFormat(resultSet.getString("format"));
                     configuration.setDateRun(resultSet.getDate("date_run"));
+                    configuration.setSeparator(resultSet.getString("separator"));
                 }
             }
         } catch (SQLException e) {

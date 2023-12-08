@@ -34,7 +34,7 @@ public class Main {
                     //Ghi log đang extract
                     LogDAO.insertLog(1, "Đang extract", 0, "In Progress - Extracting", "2023-01-01", "fileExcel", "Đang tiến hành extract dữ liệu.", connection);
                     //Ghi dữ liệu vào file execel
-                    Excel.save(data, config.getLocation()+"."+config.getFormat());
+                    Excel.save(data, config.getLocation()+"."+config.getFormat(), config.getSeparator());
                 }
 
             } else {

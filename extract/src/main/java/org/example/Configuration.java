@@ -35,11 +35,12 @@ public class Configuration {
         // Default constructor
     }
 
-    public Configuration(String sourcePath, String location, String format, Date dateRun) {
+    public Configuration(String sourcePath, String location, String format, Date dateRun, String separator) {
         this.sourcePath = sourcePath;
         this.location = location;
         this.format = format;
         this.dateRun = dateRun;
+        this.separator = separator;
     }
 
     public int getId() {
