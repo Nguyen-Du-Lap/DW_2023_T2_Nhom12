@@ -12,11 +12,11 @@ public class ConfigDAO {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
+                    // 9. Lưu các biến source_path, location,format...
                     configuration = new Configuration();
                     configuration.setSourcePath(resultSet.getString("source_path"));
                     configuration.setLocation(resultSet.getString("location"));
                     configuration.setFormat(resultSet.getString("format"));
-                    configuration.setDateRun(resultSet.getDate("date_run"));
                     configuration.setSeparator(resultSet.getString("separator"));
                 }
             }
