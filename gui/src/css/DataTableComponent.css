@@ -1,0 +1,28 @@
+/* DataTableComponent.css */
+
+/* Style cho bảng */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px; /* Khoảng cách từ đỉnh trang trang web */
+}
+
+/* Style cho các ô tiêu đề */
+th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: #f2f2f2; /* Màu nền ô tiêu đề */
+}
+
+/* Style cho các ô dữ liệu */
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center; /* Căn giữa nội dung trong ô dữ liệu */
+}
+
+/* Style cho các hàng xen kẽ */
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Màu nền của các hàng chẵn */
+}

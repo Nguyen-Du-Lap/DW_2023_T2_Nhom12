@@ -1,0 +1,10 @@
+/* CSS cho LineChartComponent.css */
+.line-chart {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  canvas {
+    width: 100%;
+    margin: 0 auto;
+  }
+  

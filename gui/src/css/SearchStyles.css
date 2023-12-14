@@ -1,0 +1,41 @@
+/* Tùy chỉnh kiểu CSS cho phần tìm kiếm */
+.search-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-self: start;
+  }
+
+  .select-container {
+    border-radius: 8px;
+    display: flex;
+  }
+  
+  .search-container h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .label-select {
+    display: block;
+    margin-right: 12px;
+    padding-top: 4px;
+  }
+  
+  .select-dropdown {
+    width: 190px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  /* Tùy chỉnh màu nền và màu chữ của option trong dropdown */
+  .select-dropdown option {
+    background-color: #fff;
+    color: #333;
+  }
+  
