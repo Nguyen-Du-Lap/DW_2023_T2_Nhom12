@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public class MySQLConnectionManager {
 
-    // Phương thức để lấy kết nối đến MySQL
+
     public static Connection getConnection(String url, String username, String password) {
         try {
             return DriverManager.getConnection(url,username, password);

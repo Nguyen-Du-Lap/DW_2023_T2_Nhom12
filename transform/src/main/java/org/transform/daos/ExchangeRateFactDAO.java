@@ -30,7 +30,6 @@ public class ExchangeRateFactDAO {
             statement.setDate(1, date);
             // Execute the query
             rowsAffected = statement.executeUpdate();
-            System.out.println("Inserted " + rowsAffected + " rows into database_warehouse.exchange_rate_fact");
             return rowsAffected;
         }catch (SQLException e) {
             return rowsAffected;
