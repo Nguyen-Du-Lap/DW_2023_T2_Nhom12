@@ -13,6 +13,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
@@ -68,7 +69,7 @@ public class Load_Staging {
 				
 //					6. Kiểm tra status= Default || PE || CE || PL  
 					if (status.equals("Default") || status.equals("PE") || status.equals("CE") || status.equals("PL")) {
-//					  7. Kiểm tra status=CE 
+//					  7. Kiểm tra status= CE || PL 
 					
 						if (status.equals("CE") || status.equals("PL")) {
 //							8. Cập nhật status = PL
@@ -98,10 +99,14 @@ public class Load_Staging {
 					   					int res_clean = call_clean.executeUpdate();
 					   				
 //					   					14. Chuyển dữ liệu từ  staging.exchange_rate_temp vào staging.exchange_rate
-					   					String transfer = "call transfer_data(?)";
+					   					String transfer = "call transfer_data(?,?)";
 					   			
-						   				try(CallableStatement call_transfer = connect_staging.prepareCall(transfer)){	
+						   				try(CallableStatement call_transfer = connect_staging.prepareCall(transfer)){							   				
+						   			        LocalDate currentDate = LocalDate.now();
+						   			        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy'-'MM'-'dd");
+						   			        String formattedDate = currentDate.format(formatter);
 						   					call_transfer.setString(1, id);
+						   					call_transfer.setString(2, formattedDate);
 						   					int res_transfer = call_transfer.executeUpdate();						   					
 //						   					15. Kiểm tra có thành công hay không? = Trường hợp yes
 //						   					16. Cập nhật status = CL 
@@ -213,12 +218,12 @@ public class Load_Staging {
 			writer.write(data);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}	
 	}
 	public static void main(String[] args) throws Exception {
 		Load_Staging load = new Load_Staging();
 		String id_source = args.length > 0 ? args[0] : "1";
-		load.load(id_source);
+		load.load("1");
 	}
 
 }
