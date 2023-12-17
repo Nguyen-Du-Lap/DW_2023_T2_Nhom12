@@ -1,7 +1,7 @@
 package org.transform.models;
 
 public enum Status {
-    PE,SE,FE,PL,CL,FL,PT,CT,FT,PA,CA,FA,PLDM,CLDM,FLDM
+    PE,SE,FE, PL,CL,FL, PT,CT,FT, PA,CA,FA,PLDM,CLDM,FLDM
 }
 //        1.Extract (Trích xuất)
 //        In Progress - Extracting: Quá trình trích xuất đang diễn ra.

@@ -25,7 +25,7 @@ public class Main {
             if (connectionControl != null) {
                 //  4. Load dòng trường dữ liệu có status=CL và flag= 1 trong table config từ database control
                 Configuration config = ConfigDAO.getConfigByFlagAndStatus(connectionControl);
-
+                System.out.println(config);
                 // 5. Kiểm tra dữ liệu có tồn tại hay không
                 if (config != null) {
                     // 6. Cập nhật status = PT
@@ -42,7 +42,7 @@ public class Main {
                         LogDAO.insertLog(Constant.ID_CONFIG, "Tiến hành transform", 0, "In Progress - Transform", "data_staging", "data_warehouse", "Transform thất bại, kết nối đến database staging và warehouse không thành công", connectionControl);
 
                         // 12. Dựa vào dữ liệu config để load dữ liệu từ Database_Staging vào table exchange_rate_fact trong Database_Warehouse
-                        int rows = ExchangeRateFactDAO.insert(connectionWarehouse, config.getDateRun());
+                        int rows = ExchangeRateFactDAO.insert(connectionWarehouse);
 
                         // 13. Kiểm tra có thành công hay không?
                         if(rows > Constant.ZERO) {

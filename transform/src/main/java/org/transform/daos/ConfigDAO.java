@@ -11,7 +11,9 @@ public class ConfigDAO {
     // 5. Kiểm tra status=CL và flag= 1 không
     public static Configuration getConfigByFlagAndStatus(Connection connection) {
         Configuration config = null;
-        String sql = "SELECT database_name_staging, database_name_warehouse, server_name, port, username, password, date_run " +
+//        String sql = "SELECT database_name_staging, database_name_warehouse, server_name, port, username, password" +
+//                "FROM config WHERE flag = 1 AND status = 'CL'";
+        String sql = "SELECT database_name_staging, database_name_warehouse, server_name, port, username, password\n" +
                 "FROM config WHERE flag = 1 AND status = 'CL'";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -24,7 +26,6 @@ public class ConfigDAO {
                     config.setPort(resultSet.getString(4));
                     config.setUsername(resultSet.getString(5));
                     config.setPassword(resultSet.getString(6));
-                    config.setDateRun(resultSet.getDate(7));
                 }
             }
         } catch (SQLException e) {

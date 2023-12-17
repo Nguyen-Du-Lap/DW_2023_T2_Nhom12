@@ -22,7 +22,6 @@ public class Configuration {
     private String username;
     private String password;
     private String destination;
-    private Date dateRun;
     private Date createdAt;
     private String createdBy;
     private Date updatedAt;
@@ -35,11 +34,10 @@ public class Configuration {
         // Default constructor
     }
 
-    public Configuration(String sourcePath, String location, String format, Date dateRun) {
+    public Configuration(String sourcePath, String location, String format) {
         this.sourcePath = sourcePath;
         this.location = location;
         this.format = format;
-        this.dateRun = dateRun;
     }
 
     public int getId() {
@@ -194,13 +192,6 @@ public class Configuration {
         this.destination = destination;
     }
 
-    public Date getDateRun() {
-        return dateRun;
-    }
-
-    public void setDateRun(Date dateRun) {
-        this.dateRun = dateRun;
-    }
 
     public Date getCreatedAt() {
         return createdAt;
@@ -232,5 +223,34 @@ public class Configuration {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    @Override
+    public String toString() {
+        return "Configuration{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status='" + status + '\'' +
+                ", flag=" + flag +
+                ", description='" + description + '\'' +
+                ", sourcePath='" + sourcePath + '\'' +
+                ", location='" + location + '\'' +
+                ", format='" + format + '\'' +
+                ", separator='" + separator + '\'' +
+                ", columnsNameStagingTemp='" + columnsNameStagingTemp + '\'' +
+                ", typeColumnsStagingTemp='" + typeColumnsStagingTemp + '\'' +
+                ", databaseNameStaging='" + databaseNameStaging + '\'' +
+                ", databaseNameWarehouse='" + databaseNameWarehouse + '\'' +
+                ", databaseNameDatamart='" + databaseNameDatamart + '\'' +
+                ", serverName='" + serverName + '\'' +
+                ", port='" + port + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", destination='" + destination + '\'' +
+                ", createdAt=" + createdAt +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedAt=" + updatedAt +
+                ", updatedBy='" + updatedBy + '\'' +
+                '}';
     }
 }
