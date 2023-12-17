@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetDataWeb {
-    public static List<ArrayList<String>> getData(String sourcePath) {
+    public static List<ArrayList<String>> getData(String sourcePath, Connection connection) {
         List<ArrayList<String>> data = new ArrayList<>();
 
         System.setProperty("webdriver.edge.driver", "msedgedriver.exe");
@@ -30,7 +31,7 @@ public class GetDataWeb {
         // Định dạng theo yêu cầu (dd/MM/yyyy)
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formattedDate = currentDate.format(formatter);
-
+        // 12. Kiểm tra xem có lỗi không?
         try {
             List<WebElement> tableElements = driver.findElements(By.className("jrPage"));
             System.out.println(tableElements.size());
@@ -50,9 +51,14 @@ public class GetDataWeb {
             data.remove(0);
 
         }catch (Exception e) {
+            // 16. update status = FE
+            ConfigDAO.updateStatus(connection, 1, String.valueOf(Status.FE));
+
+            // 17. Ghi log extract thất bại
+            LogDAO.insertLog(1, "Extract thất bại ", 0, "Failed - Extract", "source tỷ giá", "fileExcel", "Lỗi đọc dữ liệu ở web, hoặc phiên bản webdriver không đúng.", connection);
+
             System.out.println("Khong tim thay du lieu");
         }
-
 
         driver.close();
         return data;

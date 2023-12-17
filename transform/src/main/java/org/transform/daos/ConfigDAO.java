@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 public class ConfigDAO {
 
+    // 5. Kiểm tra status=CL và flag= 1 không
     public static Configuration getConfigByFlagAndStatus(Connection connection) {
         Configuration config = null;
         String sql = "SELECT database_name_staging, database_name_warehouse, server_name, port, username, password, date_run " +

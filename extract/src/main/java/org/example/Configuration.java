@@ -22,7 +22,6 @@ public class Configuration {
     private String username;
     private String password;
     private String destination;
-    private Date dateRun;
     private Date createdAt;
     private String createdBy;
     private Date updatedAt;
@@ -35,11 +34,11 @@ public class Configuration {
         // Default constructor
     }
 
-    public Configuration(String sourcePath, String location, String format, Date dateRun) {
+    public Configuration(String sourcePath, String location, String format, String separator) {
         this.sourcePath = sourcePath;
         this.location = location;
         this.format = format;
-        this.dateRun = dateRun;
+        this.separator = separator;
     }
 
     public int getId() {
@@ -192,14 +191,6 @@ public class Configuration {
 
     public void setDestination(String destination) {
         this.destination = destination;
-    }
-
-    public Date getDateRun() {
-        return dateRun;
-    }
-
-    public void setDateRun(Date dateRun) {
-        this.dateRun = dateRun;
     }
 
     public Date getCreatedAt() {

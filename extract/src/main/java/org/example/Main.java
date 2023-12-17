@@ -10,34 +10,43 @@ public class Main {
         Connection connection = null;
 
         try {
-            // Lấy kết nối từ MySQLConnectionManager
+            // 2.Kết nối database control
             connection = MySQLConnectionManager.getConnection();
 
-            // Kiểm tra kết nối thành công
+            // 3. Kiểm tra kết nối có thành công hay không?
             if (connection != null) {
-                System.out.println("Kết nối thành công đến database_control!");
 
-                // Log Tiến hành extract
-                LogDAO.insertLog(1, "Bắt đầu extract", 0, "In Progress - Extracting", "2023-01-01", "fileExcel", "Bắt đầu tiến hành extract dữ liệu.", connection);
+                // 4. Ghi log bắt đầu extract
+                LogDAO.insertLog(1, "Bắt đầu extract", 0, "In Progress - Extracting", "source tỷ giá", "fileExcel", "Bắt đầu tiến hành extract dữ liệu.", connection);
 
-                // Lấy dữ liệu từ configuration với điều kiện flag = 1 và status = 'default'
+                // 5. Load dữ liệu trong table config từ database control
+                // 6. Dòng dữ liệu flag=1 và status= Default
                 Configuration config = ConfigDAO.getConfigByFlagAndStatus(connection);
 
-                // Tồn tại
+                // 7. Kiểm xem tồn tại hay không?
                 if (config != null) {
-//                // update status=PE
-//                    ConfigDAO.updateStatus(connection, 1, String.valueOf(Status.PE));
-//
-                    // Tiến hành extract
-                    List<ArrayList<String>> data = GetDataWeb.getData(config.getSourcePath());
 
-                    //Ghi log đang extract
-                    LogDAO.insertLog(1, "Đang extract", 0, "In Progress - Extracting", "2023-01-01", "fileExcel", "Đang tiến hành extract dữ liệu.", connection);
-                    //Ghi dữ liệu vào file execel
-                    Excel.save(data, config.getLocation()+"."+config.getFormat());
+                    // 10. Update status=PE
+                    ConfigDAO.updateStatus(connection, 1, String.valueOf(Status.PE));
+
+                    // 11. Dùng source_path và format tiến hành extract
+                    List<ArrayList<String>> data = GetDataWeb.getData(config.getSourcePath(), connection);
+
+                    // 13. Ghi log đang extract
+                    LogDAO.insertLog(1, "Đang extract", 0, "In Progress - Extracting", "source tỷ giá", "fileExcel", "Đang tiến hành extract dữ liệu.", connection);
+
+                    //14. Ghi dữ liệu vào file excel với tên là biến location
+                    Excel.save(data, config.getLocation()+"."+config.getFormat(), config.getSeparator(), connection);
+                }else {
+                    // 8. Ghi log extract thất bại, flag=0 hoặc status != Default
+                    LogDAO.insertLog(1, "Extract thất bại, flag=0 hoặc status != Default", 0, "Failed - Extract", "source tỷ giá", "fileExcel", "Extract thất bại.", connection);
+
+                    // 20. update status = FE
+                    ConfigDAO.updateStatus(connection, 1, String.valueOf(Status.FE));
                 }
 
             } else {
+                // Đóng kết nối
                 System.out.println("Không thể kết nối đến database_control!");
             }
         } finally {
