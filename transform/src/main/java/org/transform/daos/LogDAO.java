@@ -1,5 +1,6 @@
 package org.transform.daos;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -9,10 +10,9 @@ public class LogDAO {
 
     public static void insertLog(int configId, String name, int rowCount, String status,
                                  String dataRangeFrom, String dataRangeTo, String message, Connection connection) {
-        String sql = "INSERT INTO log (config_id, name, row_count, status, data_range_from, data_range_to, message, create_at) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "{CALL insert_log(?, ?, ?, ?, ?, ?, ?)}";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (CallableStatement statement = connection.prepareCall(sql)) {
             statement.setInt(1, configId);
             statement.setString(2, name);
             statement.setInt(3, rowCount);
@@ -20,7 +20,6 @@ public class LogDAO {
             statement.setString(5, dataRangeFrom);
             statement.setString(6, dataRangeTo);
             statement.setString(7, message);
-            statement.setTimestamp(8, new java.sql.Timestamp(new Date().getTime()));
             statement.executeUpdate();
 
             System.out.println("Dữ liệu log đã được thêm vào bảng log.");

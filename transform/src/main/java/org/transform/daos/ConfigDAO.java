@@ -2,47 +2,44 @@ package org.transform.daos;
 
 import org.transform.models.Configuration;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+
 public class ConfigDAO {
 
     // 5. Kiểm tra status=CL và flag= 1 không
-    public static Configuration getConfigByFlagAndStatus(Connection connection) {
-        Configuration config = null;
-//        String sql = "SELECT database_name_staging, database_name_warehouse, server_name, port, username, password" +
-//                "FROM config WHERE flag = 1 AND status = 'CL'";
-        String sql = "SELECT database_name_staging, database_name_warehouse, server_name, port, username, password\n" +
-                "FROM config WHERE flag = 1 AND status = 'CL'";
+    public static Configuration getConfigByFlagAndStatus(Connection connection, int flag, String status) {
+        Configuration configuration = null;
+        String sql = "{CALL load_configByFlagAndStatus(?, ?)}"; // Thay thế tên stored procedure và tham số tương ứng
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (CallableStatement statement = connection.prepareCall(sql)) {
+            statement.setInt(1, flag); // Thiết lập giá trị cho tham số flag
+            statement.setString(2, status); // Thiết lập giá trị cho tham số status
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    config = new Configuration();
-                    config.setDatabaseNameStaging(resultSet.getString(1));
-                    config.setDatabaseNameWarehouse(resultSet.getString(2));
-                    config.setServerName(resultSet.getString(3));
-                    config.setPort(resultSet.getString(4));
-                    config.setUsername(resultSet.getString(5));
-                    config.setPassword(resultSet.getString(6));
+                    configuration = new Configuration();
+                    configuration.setDatabaseNameStaging(resultSet.getString("database_name_staging"));
+                    configuration.setDatabaseNameWarehouse(resultSet.getString("database_name_warehouse"));
+                    configuration.setServerName(resultSet.getString("server_name"));
+                    configuration.setPort(resultSet.getString("port"));
+                    configuration.setUsername(resultSet.getString("username"));
+                    configuration.setPassword(resultSet.getString("password"));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return config;
+        return configuration;
     }
 
     public static void updateStatus(Connection connection, int configId, String status) {
-        String sql = "UPDATE config SET status = ? WHERE id = ?";
+        String sql = "{CALL update_config(?, ?)}";
+        try (CallableStatement callableStatement = connection.prepareCall(sql)) {
+            callableStatement.setInt(1, configId);
+            callableStatement.setString(2, status);
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, status);
-            preparedStatement.setInt(2, configId);
-
-            int rowsAffected = preparedStatement.executeUpdate();
+            int rowsAffected = callableStatement.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Cập nhật status thành công!");
             } else {

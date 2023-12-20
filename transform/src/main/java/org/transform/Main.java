@@ -21,7 +21,7 @@ public class Main {
             // 3. Kiểm tra kết nối có thành công hay không?
             if (connectionControl != null) {
                 //  4. Load dòng trường dữ liệu có status=CL và flag= 1 trong table config từ database control
-                Configuration config = ConfigDAO.getConfigByFlagAndStatus(connectionControl);
+                Configuration config = ConfigDAO.getConfigByFlagAndStatus(connectionControl, Constant.FLAG_ONE, String.valueOf(Status.CL));
                 System.out.println(config);
                 // 5. Kiểm tra dữ liệu có tồn tại hay không
                 if (config != null) {
@@ -37,7 +37,7 @@ public class Main {
                     // 8. Kiểm tra kết nối có thành công hay không?
                     if (connectionStaging != null && connectionWarehouse != null) {
                         // 11. Ghi log tiến hành transform
-                        LogDAO.insertLog(Constant.ID_CONFIG, "Tiến hành transform", 0, "In Progress - Transform", "data_staging", "data_warehouse", "Transform thất bại, kết nối đến database staging và warehouse không thành công", connectionControl);
+                        LogDAO.insertLog(Constant.ID_CONFIG, "Tiến hành transform", Constant.ZERO, "In Progress - Transform", "data_staging", "data_warehouse", "Transform thất bại, kết nối đến database staging và warehouse không thành công", connectionControl);
 
                         // 12. Dựa vào dữ liệu config để load dữ liệu từ Database_Staging vào table exchange_rate_fact trong Database_Warehouse
                         int rows = ExchangeRateFactDAO.insert(connectionWarehouse);
@@ -70,6 +70,9 @@ public class Main {
             } else {
                 System.out.println("Không thể kết nối đến database_control!");
             }
+        } catch (Exception e) {
+            // 19. Ghi log ra file lưu ở D://datawarehouse/log/LogErroryyyy-MM-dd HH-mm-ss.txt
+            LogLocal.create(e.getMessage());
         } finally {
             // Đóng kết nối sau khi sử dụng
             MySQLConnectionManager.closeConnection(connectionStaging);

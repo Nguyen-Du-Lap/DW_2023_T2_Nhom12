@@ -1,4 +1,6 @@
-package org.example;
+package org.transform;
+
+import org.transform.connects.ConfigProperties;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -18,7 +20,7 @@ public class LogLocal {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path.toFile()))) {
             // Ghi dữ liệu vào file
-            writer.write( "Module : Extract /n Error Connect Database Control : " + message);
+            writer.write( "Module : Tranform /n Error Connect Database Control : " + message);
             System.out.println("Dữ liệu đã được ghi vào file '" + "LogError" + formattedDateTime+ ".txt" + "' thành công.");
         } catch (IOException e) {
             e.printStackTrace();

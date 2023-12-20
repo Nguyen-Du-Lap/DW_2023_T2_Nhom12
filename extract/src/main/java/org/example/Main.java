@@ -51,7 +51,7 @@ public class Main {
                 System.out.println("Không thể kết nối đến database_control!");
             }
         } catch (Exception e) {
-            // 20. Ghi log ra file lưu ở D://datawarehouse/log/LogErroryyyy-MM-dd HH-mm-ss.txt
+            // 21. Ghi log ra file lưu ở D://datawarehouse/log/LogErroryyyy-MM-dd HH-mm-ss.txt
             LogLocal.create(e.getMessage());
 
         } finally {
