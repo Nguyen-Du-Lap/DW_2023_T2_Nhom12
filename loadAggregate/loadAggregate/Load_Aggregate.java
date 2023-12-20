@@ -13,8 +13,10 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Properties;
 
 public class Load_Aggregate {
@@ -27,7 +29,7 @@ public class Load_Aggregate {
 	ConnectDB connect;
 
 	public void loadAggregate(String id) throws Exception {
-//		1. . Load file config init  có tên config.properties
+//		1. . Load file config init có tên config.properties
 		Properties properties = new Properties();
 		properties = new Properties();
 		try (InputStream inputStream = Load_Aggregate.class.getClassLoader().getResourceAsStream("config.properties")) {
@@ -42,12 +44,12 @@ public class Load_Aggregate {
 			db_name = properties.getProperty("database_name");
 			save_log = properties.getProperty("save_log");
 		}
-//		2. Kết nối database	control
+//		2. Kết nối database Database_Control
 		connect = new ConnectDB();
 //		3. Kiểm tra kết nối có thành công hay không?
 		try (Connection connection = connect.getConnection(db_name, server, port, user, pass)) {
 //		Trường hợp yes
-//			 4. Load các trường dữ liệu trong table config có flag = 1 và id= id từ database control
+//	 4. Load các trường dữ liệu trong table config có flag = 1 và id = id  từ Database_Control bằng procedure load_config(id)
 			String queryString = "call load_config(?)";
 			try (CallableStatement callable = connection.prepareCall(queryString)) {
 				callable.setString(1, id);
@@ -73,25 +75,25 @@ public class Load_Aggregate {
 //						7. Kiểm tra status= CT || PA
 						if (status.equals("CT") || status.equals("PA")) {
 //							Trường hợp yes
-//							8. Cập nhật status = PA
+//						8. Cập nhật status = PA bằng procedure update_config(update_id, update_status)
 							update_status(connection, id_config, "PA");
 
-//							9. Kết nối database warehouse 	
+//							9. Kết nối database Database_Warehouse 	
 							Connection connect_warehouse = connect.getConnection(data_warehouse, server_warehouse,
 									port_warehouse, user_warehouse, pass_warehouse);
 //						10. Kiểm tra kết nối có thành công hay không?
 							if (connect.isConnect(data_warehouse, server_warehouse, port_warehouse, user_warehouse,
 									pass_warehouse)) {
 //				Trường hợp yes
-//			      11. Dựa vào dữ liệu từ bảng fact và dim để load dữ liệu vào bảng aggregate trong database warehouse 
+//	 11. Dựa vào dữ liệu từ bảng fact và dim để load dữ liệu vào bảng aggregate trong Database_Warehouse bằng procedure InsertAggregateData() 
 								String load_aggregate = "call InsertAggregateData()";
 								try (PreparedStatement preLoad = connect_warehouse.prepareStatement(load_aggregate)) {
 									int row_load = preLoad.executeUpdate();
 
 //					   		12. Kiểm tra có load thành công hay không?	//Trường hợp yes
-//									13. Cập nhật status = CA
+//					13. Cập nhật status = CA bằng procedure update_config(update_id, update_status)
 									update_status(connection, id_config, "CA");
-//					   		14. Ghi log vào table log trong database control
+//		14. Ghi log vào table log trong Database_Control bằng procedure insert_log(p_config_id, p_name, p_row_count, p_status, p_data_range_from, p_data_range_to, p_message)
 									insert_Log(connection, id_config, "Load aggregate thành công", row_load, "CA",
 											"Load aggregate thành công");
 //									15. Đóng kết nối
@@ -100,9 +102,9 @@ public class Load_Aggregate {
 									return;
 								} catch (Exception e) {
 									// Trường hợp no của bước 12
-//					   				19. Cập nhật status = FA
+//					19. Cập nhật status = FA bằng procedure update_config(update_id, update_status)
 									update_status(connection, id_config, "FA");
-//					   				20. Ghi log vào table log trong database control
+//		20. Ghi log vào table log trong Database_Control  bằng procedure insert_log(p_config_id, p_name, p_row_count, p_status, p_data_range_from, p_data_range_to, p_message)
 									insert_Log(connection, id_config, "Load aggregate không thành công", 0, "FA",
 											e.getMessage());
 //									21. Đóng kết nối
@@ -112,22 +114,21 @@ public class Load_Aggregate {
 								}
 //						Trường hợp no của bước 10
 							} else {
-//							16. Cập nhật status = FA 
+//					16. Cập nhật status = FA bằng procedure update_config(update_id, update_status)
 								update_status(connection, id_config, "FA");
-//							17. Ghi log vào table log trong database control
+//			17. Ghi log vào table log trong Database_Control bằng procedure insert_log(p_config_id, p_name, p_row_count, p_status, p_data_range_from, p_data_range_to, p_message)
 								insert_Log(connection, id_config, "Load aggregate không thành công", 0, "FA",
 										"Không load aggregate thành công do không kết nối database warehouse không được");
 //						    18. Đóng kết nối
-
 								connection.close();
 								return;
 							}
 						}
 						// Trường hợp no của bước 7
 						else {
-//						22. Cập nhật status = FA
+//				22. Cập nhật status = FA bằng procedure update_config(update_id, update_status)
 							update_status(connection, id_config, "FA");
-//						20. Ghi log vào table log trong database control 
+//		20. Ghi log vào table log trong Database_Control  bằng procedure insert_log(p_config_id, p_name, p_row_count, p_status, p_data_range_from, p_data_range_to, p_message)
 							insert_Log(connection, id_config, "Load aggregate không thành công", 0, "FA",
 									"Không load aggregate thành công do chưa transform thành công.");
 //						21. Đóng kết nối
@@ -148,13 +149,14 @@ public class Load_Aggregate {
 		} catch (Exception e2) {
 			
 //	    Trường hợp no của bước 3
-//			24. Ghi log ra file lưu ở D://datawarehouse/log
+//	24. Ghi log ra file lưu ở D://datawarehouse/log/LogErroryyyy-MM-dd HH-mm-ss.txt
 			
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss.SSSSSSSSS");
-			String currentDateTime = LocalDateTime.now().format(formatter);
+			Date currentDateTime = new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+			String formattedDateTime = formatter.format(currentDateTime);
 			Path logDirectory = Paths.get("D:\\datawarehouse\\log\\");
 			Files.createDirectories(logDirectory);
-			createFileWithIncrementedName(save_log, "LogError" + currentDateTime + ".txt",
+			createFileWithIncrementedName(save_log, "LogError" + formattedDateTime + ".txt",
 					"Module : Load /n Error : " + e2.getMessage());
 		}
 	}
