@@ -2,10 +2,7 @@ package org.transform;
 
 import org.transform.connects.ConfigProperties;
 import org.transform.connects.MySQLConnectionManager;
-import org.transform.daos.ConfigDAO;
-import org.transform.daos.ExchangeRateDAO;
-import org.transform.daos.ExchangeRateFactDAO;
-import org.transform.daos.LogDAO;
+import org.transform.daos.*;
 import org.transform.models.Configuration;
 import org.transform.models.Status;
 
@@ -34,8 +31,9 @@ public class Main {
                    // 7. Kết nối Database_Warehouse và Database_Staging
                     String urlStaging = MySQLConnectionManager.urlFormat(config.getServerName(),config.getPort(),config.getDatabaseNameStaging());
                     String urlWarehouse = MySQLConnectionManager.urlFormat(config.getServerName(),config.getPort(),config.getDatabaseNameWarehouse());
-                    connectionStaging = MySQLConnectionManager.getConnection(urlStaging, config.getUsername(), config.getPassword());
-                    connectionWarehouse = MySQLConnectionManager.getConnection(urlWarehouse, config.getUsername(), config.getPassword());
+                    connectionStaging = MySQLConnectionManager.getConnection(urlStaging, config.getUsername(), config.getPassword(), connectionControl);
+                    connectionWarehouse = MySQLConnectionManager.getConnection(urlWarehouse, config.getUsername(), config.getPassword(), connectionControl);
+
                     // 8. Kiểm tra kết nối có thành công hay không?
                     if (connectionStaging != null && connectionWarehouse != null) {
                         // 11. Ghi log tiến hành transform
@@ -51,7 +49,7 @@ public class Main {
 
                             // 17. Truncate bảng exchange_rate trong  db staging
                             ExchangeRateDAO.truncate(connectionStaging);
-
+                            ExchangeRateTempDAO.truncate(connectionStaging);
                             // 18. Ghi log transform thành công
                             LogDAO.insertLog(Constant.ID_CONFIG, "Transform thành công", rows, "Completed - Transform", "data_staging", "data_warehouse", "Transform thành công", connectionControl);
                         }else {
@@ -63,7 +61,7 @@ public class Main {
                         }
                     }else {
                         // 9. Ghi log vào table log trong database control
-                        LogDAO.insertLog(Constant.ID_CONFIG, "transform", Constant.ZERO, "Failed - Transform", "data_staging", "data_warehouse", "Transform thất bại, kết nối đến database staging và warehouse không thành công", connectionControl);
+                        LogDAO.insertLog(Constant.ID_CONFIG, "Kết nối db staging và warehouse để transform", Constant.ZERO, "Failed - Transform", "data_staging", "data_warehouse", "Transform thất bại, kết nối đến database staging và warehouse không thành công", connectionControl);
 
                         // 10. Cập nhật status = FT
                         ConfigDAO.updateStatus(connectionControl, Constant.ID_CONFIG, String.valueOf(Status.FT));

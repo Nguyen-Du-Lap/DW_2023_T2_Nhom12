@@ -1,18 +1,17 @@
 package org.example;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+
 public class ConfigDAO {
-
-    public static Configuration getConfigByFlagAndStatus(Connection connection) {
+    public static Configuration getConfigByFlagAndStatus(Connection connection, int flag, String status) {
         Configuration configuration = null;
-        String sql = "SELECT * FROM config WHERE flag = 1 AND status = 'default'";
+        String sql = "{CALL load_configByFlagAndStatus(?, ?)}"; // Thay thế tên stored procedure và tham số tương ứng
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (CallableStatement statement = connection.prepareCall(sql)) {
+            statement.setInt(1, flag); // Thiết lập giá trị cho tham số flag
+            statement.setString(2, status); // Thiết lập giá trị cho tham số status
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    // 9. Lưu các biến source_path, location,format...
                     configuration = new Configuration();
                     configuration.setSourcePath(resultSet.getString("source_path"));
                     configuration.setLocation(resultSet.getString("location"));
@@ -28,13 +27,12 @@ public class ConfigDAO {
     }
 
     public static void updateStatus(Connection connection, int configId, String status) {
-        String sql = "UPDATE config SET status = ? WHERE id = ?";
+        String sql = "{CALL update_config(?, ?)}";
+        try (CallableStatement callableStatement = connection.prepareCall(sql)) {
+            callableStatement.setInt(1, configId);
+            callableStatement.setString(2, status);
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, status);
-            preparedStatement.setInt(2, configId);
-
-            int rowsAffected = preparedStatement.executeUpdate();
+            int rowsAffected = callableStatement.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Cập nhật status thành công!");
             } else {

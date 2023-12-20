@@ -35,7 +35,7 @@ public class GetDataWeb {
         try {
             List<WebElement> tableElements = driver.findElements(By.className("jrPage"));
             System.out.println(tableElements.size());
-            WebElement secondTable = tableElements.get(2);
+            WebElement secondTable = tableElements.get(Constant.TWO);
 
             List<WebElement> rows = secondTable.findElements(By.xpath(".//tr[@style='height:30px']"));
 
@@ -48,14 +48,14 @@ public class GetDataWeb {
                 rowsText.add(formattedDate);
                 data.add(rowsText);
             }
-            data.remove(0);
+            data.remove(Constant.ZERO);
 
         }catch (Exception e) {
             // 16. update status = FE
-            ConfigDAO.updateStatus(connection, 1, String.valueOf(Status.FE));
+            ConfigDAO.updateStatus(connection, Constant.ID_CONFIG_ONE, String.valueOf(Status.FE));
 
             // 17. Ghi log extract thất bại
-            LogDAO.insertLog(1, "Extract thất bại ", 0, "Failed - Extract", "source tỷ giá", "fileExcel", "Lỗi đọc dữ liệu ở web, hoặc phiên bản webdriver không đúng.", connection);
+            LogDAO.insertLog(Constant.ID_CONFIG_ONE, "Extract thất bại ", Constant.ZERO, "Failed - Extract", "source tỷ giá", "fileExcel", "Lỗi đọc dữ liệu ở web, hoặc phiên bản webdriver không đúng.", connection);
 
             System.out.println("Khong tim thay du lieu");
         }

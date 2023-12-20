@@ -21,18 +21,18 @@ public class Excel {
                 pr.println(rowStringBuilder.deleteCharAt(rowStringBuilder.length() - 1).toString());
             }
             // 18. update status = CE
-            ConfigDAO.updateStatus(connection, 1, String.valueOf(Status.CE));
+            ConfigDAO.updateStatus(connection, Constant.ID_CONFIG_ONE, String.valueOf(Status.CE));
 
             // 19. Ghi log extract thành công
-            LogDAO.insertLog(1, "Extract thành công", data.size(), "Completed - Extract", "source tỷ giá", "fileExcel", "Quá trinh lưu vào file thất bại!.", connection);
+            LogDAO.insertLog(Constant.ID_CONFIG_ONE, "Extract thành công", data.size(), "Completed - Extract", "source tỷ giá", "fileExcel", "Quá trinh lưu vào file thành công!.", connection);
 
             System.out.println("Dữ liệu đã được lưu vào tệp tin thành công.");
         } catch (IOException e) {
             // 16. update status = FE
-            ConfigDAO.updateStatus(connection, 1, String.valueOf(Status.FE));
+            ConfigDAO.updateStatus(connection, Constant.ID_CONFIG_ONE, String.valueOf(Status.FE));
 
             // 17. Ghi log extract thất bại
-            LogDAO.insertLog(1, "Extract thất bại", 0, "Failed - Extract", "source tỷ giá", "fileExcel", "Quá trinh lưu vào file thất bại!.", connection);
+            LogDAO.insertLog(Constant.ID_CONFIG_ONE, "Extract thất bại", Constant.ZERO, "Failed - Extract", "source tỷ giá", "fileExcel", "Quá trinh lưu vào file thất bại!.", connection);
             e.printStackTrace();
         }
 

@@ -29,4 +29,6 @@ public class ConfigProperties {
     public static String getJdbcURL() {
         return prop.getProperty("jdbcURL");
     }
+
+    public static String getSaveLog() {return prop.getProperty("saveLog");}
 }
